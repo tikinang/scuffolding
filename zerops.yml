@@ -7,7 +7,7 @@ web:
       - wget -q https://golang.org/dl/go1.18.3.linux-amd64.tar.gz
       - tar -xzf go1.18.3.linux-amd64.tar.gz -C /usr/local/
       - ln -s /usr/local/go/bin/go /usr/bin/go
-      - go build -o icbaat-web -v -ldflags="-X 'main.version=`git describe --tags --abbrev=0`'" cmd/web/main.go
+      - go build -o icbaat-web -v -ldflags="-X 'main.version=`git describe --tags $(git rev-list --tags --max-count=1)`'" cmd/web/main.go
     deploy:
       - icbaat-web
   run:
