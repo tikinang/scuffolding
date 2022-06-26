@@ -2,9 +2,9 @@ package route
 
 import (
 	"context"
-	"github.com/tikinang/tikigo/logger"
-	"github.com/tikinang/tikigo/skelet"
-	"github.com/tikinang/tikigo/web"
+	"icbaat/pkg/shared/tikigo/logger"
+	"icbaat/pkg/shared/tikigo/skelet"
+	"icbaat/pkg/shared/tikigo/web"
 	"icbaat/pkg/web/api"
 	"icbaat/pkg/web/site"
 )

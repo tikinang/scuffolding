@@ -2,7 +2,7 @@ package api
 
 import (
 	_ "embed"
-	"github.com/tikinang/tikigo/web"
+	"icbaat/pkg/shared/tikigo/web"
 )
 
 type Handler struct {

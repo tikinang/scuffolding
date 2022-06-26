@@ -3,8 +3,6 @@ web:
     base:
       - go@1
     build:
-      - export # FIXME: mpavlicek - remove me
-      - git describe --tags --abbrev=0 # FIXME: mpavlicek - remove me
       - go build -o icbaat-web -v -ldflags="-X 'main.version=`git describe --tags --abbrev=0`'" cmd/web/main.go
     deploy:
       - icbaat-web

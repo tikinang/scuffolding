@@ -1,9 +1,9 @@
 package di
 
 import (
-	"github.com/tikinang/tikigo/logger"
-	"github.com/tikinang/tikigo/web"
 	"icbaat/pkg/shared/httpClient"
+	"icbaat/pkg/shared/tikigo/logger"
+	"icbaat/pkg/shared/tikigo/web"
 	"icbaat/pkg/web/api"
 	"icbaat/pkg/web/route"
 	"icbaat/pkg/web/site"

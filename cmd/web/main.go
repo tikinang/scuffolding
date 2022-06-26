@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/tikinang/tikigo/skelet"
+	"icbaat/pkg/shared/tikigo/skelet"
 	"icbaat/pkg/web/di"
 )
 

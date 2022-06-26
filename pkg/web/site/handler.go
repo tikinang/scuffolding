@@ -4,9 +4,9 @@ import (
 	"context"
 	"embed"
 	"github.com/pkg/errors"
-	"github.com/tikinang/tikigo/skelet"
-	"github.com/tikinang/tikigo/web"
 	"html/template"
+	"icbaat/pkg/shared/tikigo/skelet"
+	"icbaat/pkg/shared/tikigo/web"
 	"io/fs"
 )
 
