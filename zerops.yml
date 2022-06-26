@@ -1,0 +1,10 @@
+web:
+  build:
+    base:
+      - go@1
+    build:
+      - go build -o icbaat-web cmd/web/main.go
+    deploy:
+      - icbaat-web
+  run:
+    start: ./icbaat-web run
