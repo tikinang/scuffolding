@@ -3,6 +3,11 @@ web:
     base:
       - go@1
     build:
+      - rm /usr/bin/go; rm /usr/lib/go; rm /usr/share/go
+      - apt install -y golang-1.18 go-dep
+      - ln -s /usr/lib/go-1.18/bin/go /usr/bin/go
+      - ln -s /usr/lib/go-1.18/bin/go /usr/lib/go
+      - ln -s /usr/lib/go-1.18/bin/go /usr/share/go
       - go build -o icbaat-web -v -ldflags="-X 'main.version=`git describe --tags --abbrev=0`'" cmd/web/main.go
     deploy:
       - icbaat-web
