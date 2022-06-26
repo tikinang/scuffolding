@@ -6,16 +6,16 @@ import (
 )
 
 var (
-	Project = "icbaat"
-	Name    = "web"
-	Version = "v0.0.0"
+	project = "icbaat"
+	name    = "web"
+	version = "v0.0.0"
 )
 
 func main() {
 	skelet.Daemon(
-		Project,
-		Name,
-		Version,
+		project,
+		name,
+		version,
 		di.DefaultConfig(),
 		new(di.Handler),
 		di.Providers()...,
