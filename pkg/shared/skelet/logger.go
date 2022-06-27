@@ -1,4 +1,4 @@
-package logger
+package skelet
 
 import (
 	"github.com/pkg/errors"
@@ -6,26 +6,27 @@ import (
 	"os"
 )
 
-type Config struct {
+type LoggerConfig struct {
 	Level        string
 	ReportCaller bool
 }
 
-func DefaultConfig() Config {
-	return Config{
+func DefaultLoggerConfig() LoggerConfig {
+	return LoggerConfig{
 		Level:        logrus.DebugLevel.String(),
 		ReportCaller: false,
 	}
 }
 
-type Handler struct {
-	config Config
+type Logger struct {
+	config LoggerConfig
+	
 	logrus.FieldLogger
 }
 
-func New(
-	config Config,
-) (*Handler, error) {
+func NewLogger(
+	config LoggerConfig,
+) (*Logger, error) {
 
 	level, err := logrus.ParseLevel(config.Level)
 	if err != nil {
@@ -41,28 +42,28 @@ func New(
 		Level:        level,
 	}
 
-	return &Handler{
+	return &Logger{
 		config:      config,
 		FieldLogger: logger,
 	}, nil
 }
 
-func (r *Handler) WithField(key string, value any) *Handler {
-	return &Handler{
+func (r *Logger) WithField(key string, value any) *Logger {
+	return &Logger{
 		config:      r.config,
 		FieldLogger: r.FieldLogger.WithField(key, value),
 	}
 }
 
-func (r *Handler) WithFields(fields logrus.Fields) *Handler {
-	return &Handler{
+func (r *Logger) WithFields(fields logrus.Fields) *Logger {
+	return &Logger{
 		config:      r.config,
 		FieldLogger: r.FieldLogger.WithFields(fields),
 	}
 }
 
-func (r *Handler) WithError(err error) *Handler {
-	return &Handler{
+func (r *Logger) WithError(err error) *Logger {
+	return &Logger{
 		config:      r.config,
 		FieldLogger: r.FieldLogger.WithError(err),
 	}

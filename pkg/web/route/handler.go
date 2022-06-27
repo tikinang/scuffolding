@@ -2,24 +2,22 @@ package route
 
 import (
 	"context"
-	"icbaat/pkg/shared/tikigo/logger"
-	"icbaat/pkg/shared/tikigo/skelet"
-	"icbaat/pkg/shared/tikigo/web"
+	"icbaat/pkg/shared/skelet"
 	"icbaat/pkg/web/api"
 	"icbaat/pkg/web/site"
 )
 
 type Handler struct {
-	log  *logger.Handler
-	web  *web.Handler
+	log  *skelet.Logger
+	web  *skelet.Web
 	api  *api.Handler
 	site *site.Handler
 }
 
 func New(
 	runner *skelet.Runner,
-	log *logger.Handler,
-	web *web.Handler,
+	log *skelet.Logger,
+	web *skelet.Web,
 	api *api.Handler,
 	site *site.Handler,
 ) (r *Handler) {
@@ -36,8 +34,8 @@ func New(
 func (r *Handler) Before(ctx context.Context) error {
 	guest := r.web.Router().Group("/")
 	{
-		guest.GET("/", web.HtmlGuestGet(r.site.Index, "index.gohtml"))
-		guest.GET("/ping", web.RestGuest(r.api.Ping))
+		guest.GET("/", skelet.HtmlGuestGet(r.site.Index, "index.gohtml"))
+		guest.POST("/do-art", skelet.RestGuest(r.api.DoArt))
 	}
 	return nil
 }

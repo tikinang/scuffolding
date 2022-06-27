@@ -2,18 +2,17 @@ package skelet
 
 import (
 	"context"
-	"icbaat/pkg/shared/tikigo/logger"
 	"reflect"
 	"sync"
 )
 
 type Runner struct {
-	log        *logger.Handler
+	log        *Logger
 	components []any
 }
 
 func NewRunner(
-	log *logger.Handler,
+	log *Logger,
 ) *Runner {
 	return &Runner{
 		log: log,
@@ -55,7 +54,7 @@ func (r *Runner) run(ctx context.Context) error {
 		}
 	}
 
-	wg := new(sync.WaitGroup)
+	var wg sync.WaitGroup
 	for _, component := range r.components {
 		run, is := component.(Run)
 		if !is {

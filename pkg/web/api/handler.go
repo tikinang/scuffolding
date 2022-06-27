@@ -1,18 +1,17 @@
 package api
 
 import (
-	_ "embed"
-	"icbaat/pkg/shared/tikigo/web"
+	"icbaat/pkg/web/model"
 )
 
 type Handler struct {
-	web *web.Handler
+	repositoryFactory *model.Factory
 }
 
 func New(
-	web *web.Handler,
+	repositoryFactory *model.Factory,
 ) (r *Handler) {
 	return &Handler{
-		web: web,
+		repositoryFactory: repositoryFactory,
 	}
 }

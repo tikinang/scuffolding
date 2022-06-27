@@ -5,18 +5,17 @@ import (
 	"embed"
 	"github.com/pkg/errors"
 	"html/template"
-	"icbaat/pkg/shared/tikigo/skelet"
-	"icbaat/pkg/shared/tikigo/web"
+	"icbaat/pkg/shared/skelet"
 	"io/fs"
 )
 
 type Handler struct {
-	web *web.Handler
+	web *skelet.Web
 }
 
 func New(
 	runner *skelet.Runner,
-	web *web.Handler,
+	web *skelet.Web,
 ) (r *Handler) {
 	defer func() { runner.Register(r) }()
 	return &Handler{

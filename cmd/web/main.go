@@ -1,7 +1,7 @@
 package main
 
 import (
-	"icbaat/pkg/shared/tikigo/skelet"
+	"icbaat/pkg/shared/skelet"
 	"icbaat/pkg/web/di"
 )
 
@@ -17,7 +17,7 @@ func main() {
 		name,
 		version,
 		di.DefaultConfig(),
-		new(di.Handler),
+		&di.Handler{}, // FIXME: mpavlicek - do it better
 		di.Providers()...,
 	)
 }

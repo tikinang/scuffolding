@@ -1,4 +1,4 @@
-package web
+package skelet
 
 import (
 	"context"
@@ -6,50 +6,48 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"html/template"
-	"icbaat/pkg/shared/tikigo/logger"
-	"icbaat/pkg/shared/tikigo/skelet"
 	"io/fs"
 	"net/http"
 	"time"
 )
 
-type Config struct {
+type WebConfig struct {
 	ListenPort int32
 	Mode       string
 }
 
-func DefaultConfig() Config {
-	return Config{
+func DefaultWebConfig() WebConfig {
+	return WebConfig{
 		ListenPort: 1999,
 		Mode:       gin.ReleaseMode,
 	}
 }
 
-type Handler struct {
-	config Config
-	log    *logger.Handler
+type Web struct {
+	config WebConfig
+	log    *Logger
 
 	engine *gin.Engine
 	server *http.Server
 }
 
-func New(
-	runner *skelet.Runner,
-	config Config,
-	log *logger.Handler,
-) (r *Handler) {
+func NewWeb(
+	runner *Runner,
+	config WebConfig,
+	log *Logger,
+) (r *Web) {
 	defer func() { runner.Register(r) }()
-	return &Handler{
+	return &Web{
 		config: config,
 		log:    log,
 	}
 }
 
-func (r *Handler) Router() gin.IRouter {
+func (r *Web) Router() gin.IRouter {
 	return r.engine
 }
 
-func (r *Handler) SetHTML(
+func (r *Web) SetHTML(
 	staticPath string,
 	staticFs fs.FS,
 	tmpl *template.Template,
@@ -60,7 +58,7 @@ func (r *Handler) SetHTML(
 	r.engine.SetFuncMap(funcMap)
 }
 
-func (r *Handler) Before(ctx context.Context) error {
+func (r *Web) Before(ctx context.Context) error {
 
 	gin.SetMode(r.config.Mode)
 	r.engine = gin.New()
@@ -76,7 +74,7 @@ func (r *Handler) Before(ctx context.Context) error {
 	return nil
 }
 
-func (r *Handler) Run(ctx context.Context, done chan<- error) {
+func (r *Web) Run(ctx context.Context, done chan<- error) {
 	defer close(done)
 
 	shutdown := make(chan error)

@@ -2,68 +2,81 @@ package di
 
 import (
 	"icbaat/pkg/shared/httpClient"
-	"icbaat/pkg/shared/tikigo/logger"
-	"icbaat/pkg/shared/tikigo/web"
+	"icbaat/pkg/shared/skelet"
 	"icbaat/pkg/web/api"
+	"icbaat/pkg/web/model"
 	"icbaat/pkg/web/route"
 	"icbaat/pkg/web/site"
 )
 
 type Config struct {
-	Logger     logger.Config
+	Logger     skelet.LoggerConfig
 	HttpClient httpClient.Config
-	Web        web.Config
+	Web        skelet.WebConfig
+	Orm        skelet.OrmConfig
 }
 
+// FIXME: mpavlicek - create tikigo config
 func DefaultConfig() Config {
 	return Config{
-		Logger:     logger.DefaultConfig(),
+		Logger:     skelet.DefaultLoggerConfig(),
 		HttpClient: httpClient.DefaultConfig(),
-		Web:        web.DefaultConfig(),
+		Web:        skelet.DefaultWebConfig(),
+		Orm:        skelet.DefaultOrmConfig(),
 	}
 }
 
 // FIXME: mpavlicek - can it be better?
 func (r Config) GetFlavors() []any {
 	return []any{
-		func() logger.Config { return r.Logger },
+		func() skelet.LoggerConfig { return r.Logger },
 		func() httpClient.Config { return r.HttpClient },
-		func() web.Config { return r.Web },
+		func() skelet.WebConfig { return r.Web },
+		func() skelet.OrmConfig { return r.Orm },
 	}
 }
 
 type Handler struct {
-	HttpClient *httpClient.Handler
-	Web        *web.Handler
-	Routes     *route.Handler
-	Api        *api.Handler
-	Site       *site.Handler
+	HttpClient        *httpClient.Handler
+	Web               *skelet.Web
+	Routes            *route.Handler
+	Api               *api.Handler
+	Site              *site.Handler
+	Orm               *skelet.Orm
+	RepositoryFactory *model.Factory
 }
 
+// FIXME: mpavlicek - only things you want and things that needs runner need to be here
 func New(
 	httpClient *httpClient.Handler,
-	web *web.Handler,
+	web *skelet.Web,
 	route *route.Handler,
 	api *api.Handler,
 	site *site.Handler,
+	orm *skelet.Orm,
+	repositoryFactory *model.Factory,
 ) *Handler {
 	return &Handler{
-		HttpClient: httpClient,
-		Web:        web,
-		Routes:     route,
-		Api:        api,
-		Site:       site,
+		HttpClient:        httpClient,
+		Web:               web,
+		Routes:            route,
+		Api:               api,
+		Site:              site,
+		Orm:               orm,
+		RepositoryFactory: repositoryFactory,
 	}
 }
 
 func Providers() []any {
 	return []any{
 		New,
-		logger.New,
+		skelet.NewLogger,
+		skelet.NewWeb,
 		httpClient.New,
-		web.New,
 		route.New,
 		api.New,
 		site.New,
+		skelet.NewOrm,
+		model.NewFactory,
 	}
 }

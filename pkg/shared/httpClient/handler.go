@@ -1,7 +1,7 @@
 package httpClient
 
 import (
-	"icbaat/pkg/shared/tikigo/skelet"
+	"icbaat/pkg/shared/skelet"
 	"time"
 )
 
