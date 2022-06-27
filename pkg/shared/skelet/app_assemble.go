@@ -57,7 +57,7 @@ func AssembleRunner[T any](
 	if err := ctn.Invoke(func(x T) { skelet = x }); err != nil {
 		return nil, errors.Wrap(err, "invoke skelet")
 	}
-	
+
 	var runner *Runner
 	if err := ctn.Invoke(func(x *Runner) { runner = x }); err != nil {
 		return nil, errors.Wrap(err, "invoke runner")
@@ -85,7 +85,7 @@ func registerProviders(
 	}
 
 	// bind each conf fields to environment vars
-	for key, _ := range flat {
+	for key := range flat {
 		if err := v.BindEnv(key); err != nil {
 			return nil, errors.Wrapf(err, "bind env var: %s", key)
 		}
