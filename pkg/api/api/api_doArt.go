@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	"icbaat/pkg/web/model"
+	"icbaat/pkg/api/model"
 )
 
 type DoArtIn struct {
@@ -15,14 +15,14 @@ type DoArtOut struct {
 }
 
 func (r *Handler) DoArt(ctx context.Context, in DoArtIn) (DoArtOut, error) {
-	repo := r.repositoryFactory.NewArtRepository()
+	repo := r.repo.GetArt()
 
 	entity, found, err := repo.GetById(in.Id)
 	if err != nil {
 		return DoArtOut{}, err
 	}
 
-	tx, err := r.repositoryFactory.Begin(ctx)
+	tx, err := r.repo.Begin(ctx)
 	if err != nil {
 		return DoArtOut{}, err
 	}

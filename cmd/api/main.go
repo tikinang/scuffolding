@@ -1,13 +1,13 @@
 package main
 
 import (
+	"icbaat/pkg/api/di"
 	"icbaat/pkg/shared/skelet"
-	"icbaat/pkg/web/di"
 )
 
 var (
 	project = "icbaat"
-	name    = "web"
+	name    = "api"
 	version = "v0.0.0"
 )
 

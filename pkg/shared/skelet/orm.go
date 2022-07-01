@@ -67,7 +67,11 @@ func (r *Orm) Begin(ctx context.Context) (*Tx, error) {
 	}, nil
 }
 
+type DbProvider interface {
+	Db() *gorm.DB
+}
+
 // FIXME: mpavlicek - this could cause problems
-func (r *Orm) GetDb() *gorm.DB {
+func (r *Orm) Db() *gorm.DB {
 	return r.gorm
 }

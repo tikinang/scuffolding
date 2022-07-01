@@ -19,6 +19,10 @@ func (r *Tx) Commit() error {
 	return err
 }
 
+func (r *Tx) Db() *gorm.DB {
+	return r.db
+}
+
 func (r *Tx) Rollback() {
 	r.once.Do(func() {
 		if err := r.db.Rollback().Error; err != nil {

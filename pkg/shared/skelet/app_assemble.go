@@ -21,20 +21,20 @@ func AssembleSkelet[T any](
 	cmd *cobra.Command,
 	name string,
 	flavors FlavorProvider,
-	skelet T,
+	invokee T,
 	bones ...any,
 ) (T, error) {
 
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
 	if err != nil {
-		return skelet, err
+		return invokee, err
 	}
 
-	if err := ctn.Invoke(func(x T) { skelet = x }); err != nil {
-		return skelet, errors.Wrap(err, "invoke skelet")
+	if err := ctn.Invoke(func(x T) { invokee = x }); err != nil {
+		return invokee, errors.Wrap(err, "invoke invokee")
 	}
 
-	return skelet, nil
+	return invokee, nil
 }
 
 func AssembleRunner[T any](

@@ -43,3 +43,15 @@ I am going to need:
 1. embed default component (with logger with service field inside) to all components
 2. description for config values
 3. docs -> swagger
+
+
+## Tech stack
+
+I want to get to the release ASAP. I don't think, that I can do that with HTML served from backend.
+
+- Golang API (HA)
+  - MariaDB as Database (everything will be written into it, except images) (HA)
+- Svelte Web Application (HA)
+  - pre-rendered / server-side-rendered entrypoints
+  - Bulma as CSS Framework
+- Nginx as Application Balancer and for HTTPS termination (HA) 

@@ -1,17 +1,17 @@
 package api
 
 import (
-	"icbaat/pkg/web/model"
+	"icbaat/pkg/api/model"
 )
 
 type Handler struct {
-	repositoryFactory *model.Factory
+	repo *model.Factory
 }
 
 func New(
 	repositoryFactory *model.Factory,
 ) (r *Handler) {
 	return &Handler{
-		repositoryFactory: repositoryFactory,
+		repo: repositoryFactory,
 	}
 }

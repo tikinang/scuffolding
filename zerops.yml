@@ -8,8 +8,8 @@ web:
       - wget -q https://golang.org/dl/go1.18.3.linux-amd64.tar.gz
       - tar -xzf go1.18.3.linux-amd64.tar.gz -C /usr/lib/
       - ln -s /usr/lib/go/bin/go /usr/bin/go
-      - go build -o icbaat-web -v -ldflags="-X 'main.version=v0.0.1-zcli'" cmd/web/main.go
+      - go build -o icbaat-api -v -ldflags="-X 'main.version=v0.0.1-zcli'" cmd/api/main.go
     deploy:
-      - icbaat-web
+      - icbaat-api
   run:
-    start: ./icbaat-web run
+    start: ./icbaat-api run

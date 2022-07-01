@@ -2,9 +2,9 @@ package route
 
 import (
 	"context"
+	"icbaat/pkg/api/api"
+	"icbaat/pkg/api/site"
 	"icbaat/pkg/shared/skelet"
-	"icbaat/pkg/web/api"
-	"icbaat/pkg/web/site"
 )
 
 type Handler struct {
