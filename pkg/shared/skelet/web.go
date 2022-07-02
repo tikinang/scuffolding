@@ -3,6 +3,7 @@ package skelet
 import (
 	"context"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"html/template"
@@ -62,6 +63,9 @@ func (r *Web) Before(ctx context.Context) error {
 
 	gin.SetMode(r.config.Mode)
 	r.engine = gin.New()
+	r.engine.Use(gin.Logger())
+	r.engine.Use(gin.Recovery())
+	r.engine.Use(cors.Default())
 
 	r.server = &http.Server{
 		Addr:              fmt.Sprintf(":%d", r.config.ListenPort),

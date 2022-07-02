@@ -1,0 +1,23 @@
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - main
+jobs:
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - uses: golangci/golangci-lint-action@v3
+  go-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - run: go test ./...
