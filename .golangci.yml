@@ -1,3 +1,8 @@
+run:
+  tests: true
+  go: "1.19"
+  timeout: 3m
+
 output:
   format: line-number
 
