@@ -24,9 +24,10 @@ type Handler struct {
 func New(
 	runner *skelet.Runner,
 	config Config,
-) (r *Handler) {
-	defer func() { runner.Register(r) }()
-	return &Handler{
+) *Handler {
+	r := &Handler{
 		config: config,
 	}
+	runner.Register(r)
+	return r
 }

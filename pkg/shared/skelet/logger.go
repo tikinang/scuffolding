@@ -1,9 +1,10 @@
 package skelet
 
 import (
+	"os"
+
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"os"
 )
 
 type LoggerConfig struct {
@@ -20,7 +21,7 @@ func DefaultLoggerConfig() LoggerConfig {
 
 type Logger struct {
 	config LoggerConfig
-	
+
 	logrus.FieldLogger
 }
 

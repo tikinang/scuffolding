@@ -1,13 +1,14 @@
 package skelet
 
 import (
+	"strings"
+
 	"github.com/fatih/structs"
 	"github.com/jeremywohl/flatten"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/dig"
-	"strings"
 )
 
 const emptyString = ""
@@ -16,7 +17,7 @@ type FlavorProvider interface {
 	GetFlavors() []any
 }
 
-// FIXME: mpavlicek - return default T
+// TODO(mpavlicek): return default T
 func AssembleSkelet[T any](
 	cmd *cobra.Command,
 	name string,
@@ -24,7 +25,6 @@ func AssembleSkelet[T any](
 	invokee T,
 	bones ...any,
 ) (T, error) {
-
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
 	if err != nil {
 		return invokee, err
@@ -44,7 +44,6 @@ func AssembleRunner[T any](
 	skelet T,
 	bones ...any,
 ) (*Runner, error) {
-
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
 	if err != nil {
 		return nil, err
@@ -72,7 +71,6 @@ func registerProviders(
 	flavors FlavorProvider,
 	bones ...any,
 ) (*dig.Container, error) {
-
 	v := viper.New()
 	v.AutomaticEnv()
 	v.SetEnvPrefix(name)
@@ -84,12 +82,12 @@ func registerProviders(
 		return nil, errors.Wrap(err, "flatten flavor")
 	}
 
-	// bind each conf fields to environment vars
+	// Bind each conf fields to environment vars.
 	for key := range flat {
 		if err := v.BindEnv(key); err != nil {
 			return nil, errors.Wrapf(err, "bind env var: %s", key)
 		}
-		// FIXME: mpavlicek - BindPFlag
+		// TODO(mpavlicek): BindPFlag
 	}
 
 	if err := viper.BindPFlags(cmd.PersistentFlags()); err != nil {
@@ -100,7 +98,7 @@ func registerProviders(
 		return nil, errors.Wrap(err, "unmarshal flavors")
 	}
 
-	// construct app with dig
+	// Construct app with dig.
 	ctn := dig.New(dig.DeferAcyclicVerification())
 	for _, bone := range bones {
 		if err := ctn.Provide(bone); err != nil {

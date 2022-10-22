@@ -1,12 +1,12 @@
 package di
 
 import (
-	"icbaat/pkg/api/api"
-	"icbaat/pkg/api/model"
-	"icbaat/pkg/api/route"
-	"icbaat/pkg/api/site"
 	"icbaat/pkg/shared/httpClient"
 	"icbaat/pkg/shared/skelet"
+	"icbaat/pkg/web/api"
+	"icbaat/pkg/web/model"
+	"icbaat/pkg/web/route"
+	"icbaat/pkg/web/site"
 )
 
 type Config struct {
@@ -16,7 +16,7 @@ type Config struct {
 	Orm        skelet.OrmConfig
 }
 
-// FIXME: mpavlicek - create tikigo config
+// TODO(mpavlicek): create tikigo config
 func DefaultConfig() Config {
 	return Config{
 		Logger:     skelet.DefaultLoggerConfig(),
@@ -26,7 +26,7 @@ func DefaultConfig() Config {
 	}
 }
 
-// FIXME: mpavlicek - can it be better?
+// TODO(mpavlicek): can it be better?
 func (r Config) GetFlavors() []any {
 	return []any{
 		func() skelet.LoggerConfig { return r.Logger },
@@ -46,7 +46,7 @@ type Handler struct {
 	RepositoryFactory *model.Factory
 }
 
-// FIXME: mpavlicek - only things you want and things that needs runner need to be here
+// TODO(mpavlicek): only things you want and things that needs runner need to be here
 func New(
 	httpClient *httpClient.Handler,
 	web *skelet.Web,

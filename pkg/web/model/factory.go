@@ -2,8 +2,9 @@ package model
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"icbaat/pkg/shared/skelet"
+
+	"github.com/pkg/errors"
 )
 
 type Register struct {
@@ -20,15 +21,16 @@ type Factory struct {
 func NewFactory(
 	runner *skelet.Runner,
 	orm *skelet.Orm,
-) (r *Factory) {
-	defer func() { runner.Register(r) }()
-	return &Factory{
+) *Factory {
+	r := &Factory{
 		orm: orm,
 		register: &Register{
 			Art:    skelet.NewRepository[ArtId, Art](orm),
 			Artist: skelet.NewRepository[ArtistId, Artist](orm),
 		},
 	}
+	runner.Register(r)
+	return r
 }
 
 func (r *Factory) Before(ctx context.Context) error {

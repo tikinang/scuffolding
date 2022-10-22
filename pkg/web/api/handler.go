@@ -1,7 +1,7 @@
 package api
 
 import (
-	"icbaat/pkg/api/model"
+	"icbaat/pkg/web/model"
 )
 
 type Handler struct {
@@ -10,7 +10,7 @@ type Handler struct {
 
 func New(
 	repositoryFactory *model.Factory,
-) (r *Handler) {
+) *Handler {
 	return &Handler{
 		repo: repositoryFactory,
 	}

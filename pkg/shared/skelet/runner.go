@@ -4,6 +4,8 @@ import (
 	"context"
 	"reflect"
 	"sync"
+
+	"github.com/pkg/errors"
 )
 
 type Runner struct {
@@ -37,9 +39,7 @@ func (r *Runner) Register(component any) {
 }
 
 func (r *Runner) run(ctx context.Context) error {
-
 	for _, component := range r.components {
-
 		before, is := component.(Before)
 		if !is {
 			continue
@@ -50,7 +50,7 @@ func (r *Runner) run(ctx context.Context) error {
 
 		if err := before.Before(ctx); err != nil {
 			log.WithError(err).Error("before error")
-			return err
+			return errors.WithStack(err)
 		}
 	}
 
@@ -72,7 +72,6 @@ func (r *Runner) run(ctx context.Context) error {
 			if err := <-done; err != nil {
 				log.WithError(err).Error("run error")
 			}
-
 		}(run)
 	}
 	wg.Wait()

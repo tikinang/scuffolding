@@ -1,13 +1,13 @@
 package main
 
 import (
-	"icbaat/pkg/api/di"
 	"icbaat/pkg/shared/skelet"
+	"icbaat/pkg/web/di"
 )
 
 var (
 	project = "icbaat"
-	name    = "api"
+	name    = "web"
 	version = "v0.0.0"
 )
 
@@ -17,7 +17,7 @@ func main() {
 		name,
 		version,
 		di.DefaultConfig(),
-		&di.Handler{}, // FIXME: mpavlicek - do it better
+		new(di.Handler), // TODO(mpavlicek): - do it better
 		di.Providers()...,
 	)
 }

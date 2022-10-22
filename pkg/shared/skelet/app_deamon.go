@@ -3,10 +3,11 @@ package skelet
 import (
 	"context"
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/spf13/cobra"
 )
 
 func Daemon[T any](
@@ -26,7 +27,6 @@ func Daemon[T any](
 			Use:   "run",
 			Short: "Runs daemon, terminate with SIGTERM",
 			RunE: func(cmd *cobra.Command, args []string) error {
-
 				runner, err := AssembleRunner(cmd, name, flavors, skelet, bones...)
 				if err != nil {
 					return err

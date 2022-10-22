@@ -2,8 +2,9 @@ package skelet
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func RestGuest[Input any, Output any](
@@ -19,7 +20,7 @@ func RestGuest[Input any, Output any](
 
 		out, err := handle(c, in)
 		if err != nil {
-			// FIXME: mpavlicek - translate api errors
+			// TODO(mpavlicek): translate web errors
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -36,7 +37,7 @@ func HtmlGuestGet[Output any](
 
 		out, err := handle(c)
 		if err != nil {
-			// FIXME: mpavlicek - template included here in tikigo
+			// TODO(mpavlicek): template included here in tikigo
 			_ = c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}

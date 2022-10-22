@@ -3,10 +3,11 @@ package site
 import (
 	"context"
 	"embed"
-	"github.com/pkg/errors"
 	"html/template"
 	"icbaat/pkg/shared/skelet"
 	"io/fs"
+
+	"github.com/pkg/errors"
 )
 
 type Handler struct {
@@ -16,11 +17,12 @@ type Handler struct {
 func New(
 	runner *skelet.Runner,
 	web *skelet.Web,
-) (r *Handler) {
-	defer func() { runner.Register(r) }()
-	return &Handler{
+) *Handler {
+	r := &Handler{
 		web: web,
 	}
+	runner.Register(r)
+	return r
 }
 
 //go:embed template public/asset

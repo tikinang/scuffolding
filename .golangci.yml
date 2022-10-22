@@ -1,0 +1,81 @@
+output:
+  format: line-number
+
+linters:
+  enable:
+    - asasalint # checks for pass []any as any in variadic func(...any)
+    - asciicheck # checks that your code does not contain non-ASCII identifiers
+    - bidichk # checks for dangerous unicode character sequences
+    - bodyclose # checks whether HTTP response body is closed successfully
+    - dupl # tool for code clone detection
+    - durationcheck # checks for two durations multiplied together
+    - errname # checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error
+    - errorlint # finds code that will cause problems with the error wrapping scheme introduced in Go 1.13
+    - exhaustive # checks exhaustiveness of enum switch statements
+    - exportloopref # checks for pointers to enclosing loop variables
+    - forbidigo # forbids identifiers
+    - gochecknoinits # checks that no init functions are present in Go code
+    - gocognit # computes and checks the cognitive complexity of functions
+    - goconst # finds repeated strings that could be replaced by a constant
+    - gocritic # provides diagnostics that check for bugs, performance and style issues
+    - gocyclo # computes and checks the cyclomatic complexity of functions
+    - godot # checks if comments end in a period
+    - goimports # in addition to fixing imports, goimports also formats your code in the same style as gofmt
+    - gomoddirectives # manages the use of 'replace', 'retract', and 'excludes' directives in go.mod
+    - goprintffuncname # checks that printf-like functions are named with f at the end
+    - gosec # inspects source code for security problems
+    - lll # reports long lines
+    - nakedret # finds naked returns in functions greater than a specified function length
+    - nestif # reports deeply nested if statements
+    - nilerr # finds the code that returns nil even if it checks that the error is not nil
+    - nilnil # checks that there is no simultaneous return of nil error and an invalid value
+    - noctx # finds sending http request without context.Context
+    - nolintlint # reports ill-formed or insufficient nolint directives
+    - predeclared # finds code that shadows one of Go's predeclared identifiers
+    - reassign # checks that package variables are not reassigned
+    - testableexamples # checks if examples are testable (have an expected output)
+    - testpackage # makes you use a separate _test package
+    - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
+    - unconvert # removes unnecessary type conversions
+    - unparam # reports unused function parameters
+    - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
+    - godox # detects comment keywords
+    - wrapcheck # checks that errors returned from external packages are wrapped
+
+linters-settings:
+
+  wrapcheck:
+    ignorePackageGlobs:
+      - icbaat/*
+
+  godox:
+    keywords:
+      - FIXME
+      - BUG
+
+  errcheck:
+    check-type-assertions: true
+
+  exhaustive:
+    check:
+      - switch
+      - map
+
+  gocognit:
+    min-complexity: 20
+
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+
+  nakedret:
+    max-func-lines: 0
+
+  godot:
+    scope: all
+    exclude:
+      - ^(\s|)FIXME
+      - ^(\s|)TODO
+      - ^(\s|)BUG
+    capital: true

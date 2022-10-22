@@ -1,8 +1,9 @@
 package skelet
 
 import (
-	"gorm.io/gorm"
 	"sync"
+
+	"gorm.io/gorm"
 )
 
 type Tx struct {

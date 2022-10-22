@@ -2,11 +2,12 @@ package skelet
 
 import (
 	"context"
+	"sync"
+
 	"github.com/pkg/errors"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"sync"
 )
 
 type OrmConfig struct {
@@ -27,12 +28,13 @@ func NewOrm(
 	runner *Runner,
 	config OrmConfig,
 	log *Logger,
-) (r *Orm) {
-	defer func() { runner.Register(r) }()
-	return &Orm{
+) *Orm {
+	r := &Orm{
 		config: config,
 		log:    log,
 	}
+	runner.Register(r)
+	return r
 }
 
 func (r *Orm) Before(ctx context.Context) error {
@@ -42,7 +44,7 @@ func (r *Orm) Before(ctx context.Context) error {
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
-		Logger:                   nil, // FIXME: mpavlicek - fill own logger
+		Logger:                   nil, // TODO(mpavlicek): own logger
 		DisableNestedTransaction: true,
 	}
 
@@ -71,7 +73,7 @@ type DbProvider interface {
 	Db() *gorm.DB
 }
 
-// FIXME: mpavlicek - this could cause problems
+// TODO(mpavlicek): this could cause problems
 func (r *Orm) Db() *gorm.DB {
 	return r.gorm
 }

@@ -2,9 +2,9 @@ package route
 
 import (
 	"context"
-	"icbaat/pkg/api/api"
-	"icbaat/pkg/api/site"
 	"icbaat/pkg/shared/skelet"
+	"icbaat/pkg/web/api"
+	"icbaat/pkg/web/site"
 )
 
 type Handler struct {
@@ -20,15 +20,16 @@ func New(
 	web *skelet.Web,
 	api *api.Handler,
 	site *site.Handler,
-) (r *Handler) {
-	// FIXME: mpavlicek - register every component to runner with reflection on application maybe?
-	defer func() { runner.Register(r) }()
-	return &Handler{
+) *Handler {
+	// TODO(mpavlicek): register every component to runner with reflection on application maybe?
+	r := &Handler{
 		log:  log,
 		web:  web,
 		api:  api,
 		site: site,
 	}
+	runner.Register(r)
+	return r
 }
 
 func (r *Handler) Before(ctx context.Context) error {

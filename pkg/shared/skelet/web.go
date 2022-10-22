@@ -3,13 +3,14 @@ package skelet
 import (
 	"context"
 	"fmt"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"html/template"
 	"io/fs"
 	"net/http"
 	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 type WebConfig struct {
@@ -36,12 +37,13 @@ func NewWeb(
 	runner *Runner,
 	config WebConfig,
 	log *Logger,
-) (r *Web) {
-	defer func() { runner.Register(r) }()
-	return &Web{
+) *Web {
+	r := &Web{
 		config: config,
 		log:    log,
 	}
+	runner.Register(r)
+	return r
 }
 
 func (r *Web) Router() gin.IRouter {
