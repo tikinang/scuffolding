@@ -38,7 +38,6 @@ func NewOrm(
 }
 
 func (r *Orm) Before(ctx context.Context) error {
-
 	cfg := &gorm.Config{
 		SkipDefaultTransaction: true,
 		NamingStrategy: schema.NamingStrategy{

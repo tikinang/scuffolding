@@ -61,8 +61,7 @@ func (r *Web) SetHTML(
 	r.engine.SetFuncMap(funcMap)
 }
 
-func (r *Web) Before(ctx context.Context) error {
-
+func (r *Web) Before(_ context.Context) error {
 	gin.SetMode(r.config.Mode)
 	r.engine = gin.New()
 	r.engine.Use(gin.Logger())
@@ -104,4 +103,8 @@ func (r *Web) Run(ctx context.Context, done chan<- error) {
 	if err := <-shutdown; err != nil && !errors.Is(err, http.ErrServerClosed) {
 		r.log.WithError(err).Error("listen and serve error")
 	}
+}
+
+func (r *Web) Handler() http.Handler {
+	return r.engine
 }

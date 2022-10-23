@@ -12,8 +12,8 @@ import (
 
 func Daemon[T any](
 	project, name, version string,
-	flavors FlavorProvider,
 	skelet T,
+	flavors FlavorProvider,
 	bones ...any,
 ) {
 	cmd := &cobra.Command{
@@ -25,17 +25,21 @@ func Daemon[T any](
 	cmd.AddCommand(
 		&cobra.Command{
 			Use:   "run",
-			Short: "Runs daemon, terminate with SIGTERM",
+			Short: "Runs daemon, terminate with SIGTERM.",
 			RunE: func(cmd *cobra.Command, args []string) error {
-				runner, err := AssembleRunner(cmd, name, flavors, skelet, bones...)
+				runner, _, err := AssembleRunner(cmd, name, skelet, flavors, bones...)
 				if err != nil {
 					return err
 				}
 
-				ctx, cancel := signal.NotifyContext(context.Background(), TerminationSignals()...)
+				ctx, cancel := signal.NotifyContext(
+					context.Background(),
+					syscall.SIGTERM,
+					syscall.SIGINT,
+				)
 				defer cancel()
 
-				return runner.run(ctx)
+				return runner.Run(ctx)
 			},
 		},
 	)
@@ -45,16 +49,4 @@ func Daemon[T any](
 	}
 
 	os.Exit(0)
-}
-
-// TerminationSignals returns slice with default termination signals
-// as defined here https://www.gnu.org/software/libc/manual/html_node/Termination-Signals.html
-func TerminationSignals() []os.Signal {
-	return []os.Signal{
-		syscall.SIGTERM,
-		syscall.SIGINT,
-		syscall.SIGQUIT,
-		syscall.SIGKILL,
-		syscall.SIGHUP,
-	}
 }

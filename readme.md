@@ -21,13 +21,11 @@ environment variables.
 
 - [X] orm -> gorm
 - [X] logging -> logrus
-- [ ] linting
+- [X] linting
 
 ### tests
 
 - [ ] native go tests (calling straight the middlewares)
-
-## Rules
 
 1. I hold only secret values and environment dependent values in configuration
 

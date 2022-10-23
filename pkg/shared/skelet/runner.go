@@ -25,6 +25,7 @@ type Before interface {
 	Before(ctx context.Context) error
 }
 
+// TODO(mpavlicek): just return error, no need to use chan; cancel context on error happening
 type Run interface {
 	Run(ctx context.Context, done chan<- error)
 }
@@ -38,7 +39,7 @@ func (r *Runner) Register(component any) {
 	r.components = append(r.components, component)
 }
 
-func (r *Runner) run(ctx context.Context) error {
+func (r *Runner) RunBefore(ctx context.Context) error {
 	for _, component := range r.components {
 		before, is := component.(Before)
 		if !is {
@@ -52,6 +53,29 @@ func (r *Runner) run(ctx context.Context) error {
 			log.WithError(err).Error("before error")
 			return errors.WithStack(err)
 		}
+	}
+	return nil
+}
+
+func (r *Runner) RunAfter() {
+	for i := len(r.components); i > 0; i-- {
+		after, is := r.components[i-1].(After)
+		if !is {
+			continue
+		}
+
+		log := r.log.WithField("component", reflect.TypeOf(after))
+		log.Debug("before")
+
+		if err := after.After(); err != nil {
+			log.WithError(err).Error("after error")
+		}
+	}
+}
+
+func (r *Runner) Run(ctx context.Context) error {
+	if err := r.RunBefore(ctx); err != nil {
+		return err
 	}
 
 	var wg sync.WaitGroup
@@ -76,20 +100,7 @@ func (r *Runner) run(ctx context.Context) error {
 	}
 	wg.Wait()
 
-	for i := len(r.components); i > 0; i-- {
-
-		after, is := r.components[i-1].(After)
-		if !is {
-			continue
-		}
-
-		log := r.log.WithField("component", reflect.TypeOf(after))
-		log.Debug("before")
-
-		if err := after.After(); err != nil {
-			log.WithError(err).Error("after error")
-		}
-	}
+	r.RunAfter()
 
 	return nil
 }

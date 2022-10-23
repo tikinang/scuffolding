@@ -28,7 +28,6 @@ type Logger struct {
 func NewLogger(
 	config LoggerConfig,
 ) (*Logger, error) {
-
 	level, err := logrus.ParseLevel(config.Level)
 	if err != nil {
 		return nil, errors.Wrap(err, "parse logrus log level")

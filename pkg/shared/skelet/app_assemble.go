@@ -19,10 +19,10 @@ type FlavorProvider interface {
 
 // TODO(mpavlicek): return default T
 func AssembleSkelet[T any](
-	cmd *cobra.Command,
+	cmd *cobra.Command, // Can be nil.
 	name string,
-	flavors FlavorProvider,
 	invokee T,
+	flavors FlavorProvider,
 	bones ...any,
 ) (T, error) {
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
@@ -38,31 +38,31 @@ func AssembleSkelet[T any](
 }
 
 func AssembleRunner[T any](
-	cmd *cobra.Command,
+	cmd *cobra.Command, // Can be nil.
 	name string,
-	flavors FlavorProvider,
 	skelet T,
+	flavors FlavorProvider,
 	bones ...any,
-) (*Runner, error) {
+) (*Runner, T, error) {
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
 	if err != nil {
-		return nil, err
+		return nil, skelet, err
 	}
 
 	if err := ctn.Provide(NewRunner); err != nil {
-		return nil, errors.Wrap(err, "provide runner")
+		return nil, skelet, errors.Wrap(err, "provide runner")
 	}
 
 	if err := ctn.Invoke(func(x T) { skelet = x }); err != nil {
-		return nil, errors.Wrap(err, "invoke skelet")
+		return nil, skelet, errors.Wrap(err, "invoke skelet")
 	}
 
 	var runner *Runner
 	if err := ctn.Invoke(func(x *Runner) { runner = x }); err != nil {
-		return nil, errors.Wrap(err, "invoke runner")
+		return nil, skelet, errors.Wrap(err, "invoke runner")
 	}
 
-	return runner, nil
+	return runner, skelet, nil
 }
 
 func registerProviders(
@@ -90,8 +90,10 @@ func registerProviders(
 		// TODO(mpavlicek): BindPFlag
 	}
 
-	if err := viper.BindPFlags(cmd.PersistentFlags()); err != nil {
-		return nil, errors.Wrap(err, "bind persistent flags from cobra to viper")
+	if cmd != nil {
+		if err := viper.BindPFlags(cmd.PersistentFlags()); err != nil {
+			return nil, errors.Wrap(err, "bind persistent flags from cobra to viper")
+		}
 	}
 
 	if err := v.Unmarshal(&flavors); err != nil {

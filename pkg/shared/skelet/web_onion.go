@@ -11,7 +11,6 @@ func RestGuest[Input any, Output any](
 	handle func(ctx context.Context, in Input) (Output, error),
 ) func(c *gin.Context) {
 	return func(c *gin.Context) {
-
 		var in Input
 		if err := c.ShouldBindJSON(&in); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -34,7 +33,6 @@ func HtmlGuestGet[Output any](
 	tmpl string,
 ) func(c *gin.Context) {
 	return func(c *gin.Context) {
-
 		out, err := handle(c)
 		if err != nil {
 			// TODO(mpavlicek): template included here in tikigo

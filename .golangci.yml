@@ -46,6 +46,7 @@ linters:
     - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
     - godox # detects comment keywords
     - wrapcheck # checks that errors returned from external packages are wrapped
+    - whitespace # detects leading and trailing whitespace
 
 linters-settings:
 

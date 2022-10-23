@@ -16,8 +16,8 @@ func main() {
 		project,
 		name,
 		version,
-		di.DefaultConfig(),
 		new(di.Handler), // TODO(mpavlicek): - do it better
+		di.DefaultConfig(),
 		di.Providers()...,
 	)
 }
