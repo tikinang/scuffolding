@@ -1,12 +1,12 @@
 package di
 
 import (
-	"icbaat/pkg/shared/httpClient"
-	"icbaat/pkg/shared/skelet"
-	"icbaat/pkg/web/api"
-	"icbaat/pkg/web/model"
-	"icbaat/pkg/web/route"
-	"icbaat/pkg/web/site"
+	"scuffolding/pkg/shared/httpClient"
+	"scuffolding/pkg/shared/skelet"
+	"scuffolding/pkg/web/api"
+	"scuffolding/pkg/web/model"
+	"scuffolding/pkg/web/route"
+	"scuffolding/pkg/web/site"
 )
 
 type Config struct {

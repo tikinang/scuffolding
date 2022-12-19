@@ -1,7 +1,7 @@
 package api
 
 import (
-	"icbaat/pkg/web/model"
+	"scuffolding/pkg/web/model"
 )
 
 type Handler struct {

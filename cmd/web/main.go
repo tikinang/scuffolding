@@ -1,12 +1,12 @@
 package main
 
 import (
-	"icbaat/pkg/shared/skelet"
-	"icbaat/pkg/web/di"
+	"scuffolding/pkg/shared/skelet"
+	"scuffolding/pkg/web/di"
 )
 
 var (
-	project = "icbaat"
+	project = "scuffolding"
 	name    = "web"
 	version = "v0.0.0"
 )

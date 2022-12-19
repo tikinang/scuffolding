@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	"icbaat/pkg/web/model"
+	"scuffolding/pkg/web/model"
 )
 
 type DoArtIn struct {

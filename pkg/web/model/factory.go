@@ -2,7 +2,7 @@ package model
 
 import (
 	"context"
-	"icbaat/pkg/shared/skelet"
+	"scuffolding/pkg/shared/skelet"
 
 	"github.com/pkg/errors"
 )

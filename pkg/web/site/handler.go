@@ -4,8 +4,8 @@ import (
 	"context"
 	"embed"
 	"html/template"
-	"icbaat/pkg/shared/skelet"
 	"io/fs"
+	"scuffolding/pkg/shared/skelet"
 
 	"github.com/pkg/errors"
 )

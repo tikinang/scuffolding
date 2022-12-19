@@ -1,4 +1,4 @@
-module icbaat
+module scuffolding
 
 go 1.19
 

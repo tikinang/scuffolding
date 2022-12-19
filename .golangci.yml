@@ -52,7 +52,7 @@ linters-settings:
 
   wrapcheck:
     ignorePackageGlobs:
-      - icbaat/*
+      - scuffolding/*
 
   godox:
     keywords:

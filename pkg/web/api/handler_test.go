@@ -12,9 +12,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"icbaat/pkg/shared/skelet"
-	"icbaat/pkg/web/api"
-	"icbaat/pkg/web/di"
+	"scuffolding/pkg/shared/skelet"
+	"scuffolding/pkg/web/api"
+	"scuffolding/pkg/web/di"
 )
 
 func TestHandler_DoArt(t *testing.T) {
@@ -36,19 +36,21 @@ func TestHandler_DoArt(t *testing.T) {
 
 	t.Cleanup(runner.RunAfter)
 
-	out := RequestApi[api.DoArtIn, api.DoArtOut](t, app.Web.Handler(), http.MethodPost, "/do-art", api.DoArtIn{
+	h := app.Web.Handler()
+
+	out := RequestApi[api.DoArtIn, api.DoArtOut](t, h, http.MethodPost, "/do-art", api.DoArtIn{
 		Id:   "xxx",
 		Hash: "bbb",
 	})
 	t.Log(out.OldHash)
 }
 
-func RequestApi[In, Out any](t *testing.T, handler http.Handler, method, url string, in In) Out {
+func RequestApi[In, Out any](t *testing.T, h http.Handler, method, url string, in In) Out {
 	b, err := json.Marshal(in)
 	assert.Nil(t, err)
 	req := httptest.NewRequest(method, url, bytes.NewBuffer(b))
 	w := httptest.NewRecorder()
-	handler.ServeHTTP(w, req)
+	h.ServeHTTP(w, req)
 	resp := w.Result()
 	defer resp.Body.Close()
 

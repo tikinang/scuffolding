@@ -1,8 +1,8 @@
-# Icbaat (I can be an artist too!)
+# Scuffolding
 
 Framework for creating non-generated web applications focused on productivity and fast development.
-I head for personalized, opinionated, non-generated, deployable to [Zerops](https://zerops.io). Config will be taken from
-environment variables.
+I head for personalized, opinionated, **non-generated**.
+Config will be taken from environment variables.
 
 ## Tasks
 
@@ -16,6 +16,10 @@ environment variables.
 ### rest
 
 - [X] http api server -> gin
+- [ ] complete auth module middlewares
+- [ ] middlewares
+  - [ ] cors
+  - [ ] session
 
 ### others
 
@@ -25,7 +29,7 @@ environment variables.
 
 ### tests
 
-- [ ] native go tests (calling straight the middlewares)
+- [X] native go tests
 
 1. I hold only secret values and environment dependent values in configuration
 
@@ -34,11 +38,8 @@ environment variables.
 - [ ] embed default component (with logger with service field inside) to all components
 - [ ] description for config values
 - [ ] docs -> swagger
+- [ ] object storage handler
 
-## Tech stack
+# Deploy
 
-I want to get to the release ASAP. I don't think, that I can do that with HTML served from backend.
-
-- Golang web application (HA)
-    - PostgreSQL as database (everything will be written into it, except files) (HA)
-    - Object Storage for file storing
+- [ ] make Docker files

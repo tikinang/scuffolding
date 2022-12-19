@@ -1,7 +1,7 @@
 package httpClient
 
 import (
-	"icbaat/pkg/shared/skelet"
+	"scuffolding/pkg/shared/skelet"
 	"time"
 )
 
