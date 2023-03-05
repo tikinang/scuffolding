@@ -1,6 +1,6 @@
 run:
   tests: true
-  go: "1.19"
+  go: "1.20"
   timeout: 3m
 
 output:
@@ -39,7 +39,6 @@ linters:
     - predeclared # finds code that shadows one of Go's predeclared identifiers
     - reassign # checks that package variables are not reassigned
     - testableexamples # checks if examples are testable (have an expected output)
-    - testpackage # makes you use a separate _test package
     - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
     - unconvert # removes unnecessary type conversions
     - unparam # reports unused function parameters
@@ -52,7 +51,7 @@ linters-settings:
 
   wrapcheck:
     ignorePackageGlobs:
-      - scuffolding/*
+      - github.com/tikinang/scuffolding/*
 
   godox:
     keywords:

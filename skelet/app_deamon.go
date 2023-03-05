@@ -15,7 +15,6 @@ func Daemon[T any](
 	flavors FlavorProvider,
 	bones ...any,
 ) {
-
 	cmd := &cobra.Command{
 		Version: version,
 		Use:     fmt.Sprintf("%s-%s", project, name),

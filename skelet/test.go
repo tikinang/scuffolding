@@ -1,4 +1,4 @@
-package api_test
+package skelet
 
 import (
 	"bytes"
@@ -11,22 +11,22 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"scuffolding/pkg/shared/skelet"
-	"scuffolding/pkg/web/api"
-	"scuffolding/pkg/web/di"
 )
 
-func TestHandler_DoArt(t *testing.T) {
+func RegisterTestRunner[T any](
+	t *testing.T,
+	flavors FlavorProvider,
+	bones ...any,
+) *T {
 	// TODO(mpavlicek): maybe use deadline from testing
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	t.Cleanup(cancel)
 
-	runner, skelet, err := skelet.AssembleRunner[di.Di](
+	runner, skelet, err := AssembleRunner[T](
 		nil,
 		"test",
-		di.DefaultConfig(),
-		di.Providers()...,
+		flavors,
+		bones...,
 	)
 	assert.Nil(t, err)
 
@@ -35,16 +35,10 @@ func TestHandler_DoArt(t *testing.T) {
 
 	t.Cleanup(runner.RunAfter)
 
-	h := skelet.Web.Handler()
-
-	out := RequestApi[api.DoArtOut](t, h, http.MethodPost, "/do-art", api.DoArtIn{
-		Id:   "xxx",
-		Hash: "bbb",
-	})
-	t.Log(out.OldHash)
+	return skelet
 }
 
-func RequestApi[Out, In any](t *testing.T, h http.Handler, method, url string, in In) Out {
+func ApiOk[Out, In any](t *testing.T, h http.Handler, method, url string, in In) Out {
 	b, err := json.Marshal(in)
 	assert.Nil(t, err)
 	req := httptest.NewRequest(method, url, bytes.NewBuffer(b))
