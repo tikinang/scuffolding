@@ -12,11 +12,10 @@ var (
 )
 
 func main() {
-	skelet.Daemon(
+	skelet.Daemon[di.Di](
 		project,
 		name,
 		version,
-		new(di.Handler), // TODO(mpavlicek): - do it better
 		di.DefaultConfig(),
 		di.Providers()...,
 	)

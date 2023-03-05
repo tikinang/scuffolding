@@ -36,7 +36,7 @@ func (r Config) GetFlavors() []any {
 	}
 }
 
-type Handler struct {
+type Di struct {
 	HttpClient        *httpClient.Handler
 	Web               *skelet.Web
 	Routes            *route.Handler
@@ -55,8 +55,8 @@ func New(
 	site *site.Handler,
 	orm *skelet.Orm,
 	repositoryFactory *model.Factory,
-) *Handler {
-	return &Handler{
+) *Di {
+	return &Di{
 		HttpClient:        httpClient,
 		Web:               web,
 		Routes:            route,

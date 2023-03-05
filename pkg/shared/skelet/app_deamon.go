@@ -12,10 +12,10 @@ import (
 
 func Daemon[T any](
 	project, name, version string,
-	skelet T,
 	flavors FlavorProvider,
 	bones ...any,
 ) {
+
 	cmd := &cobra.Command{
 		Version: version,
 		Use:     fmt.Sprintf("%s-%s", project, name),
@@ -27,7 +27,7 @@ func Daemon[T any](
 			Use:   "run",
 			Short: "Runs daemon, terminate with SIGTERM.",
 			RunE: func(cmd *cobra.Command, args []string) error {
-				runner, _, err := AssembleRunner(cmd, name, skelet, flavors, bones...)
+				runner, _, err := AssembleRunner[T](cmd, name, flavors, bones...)
 				if err != nil {
 					return err
 				}

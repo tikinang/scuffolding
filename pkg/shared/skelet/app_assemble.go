@@ -40,26 +40,26 @@ func AssembleSkelet[T any](
 func AssembleRunner[T any](
 	cmd *cobra.Command, // Can be nil.
 	name string,
-	skelet T,
 	flavors FlavorProvider,
 	bones ...any,
-) (*Runner, T, error) {
+) (*Runner, *T, error) {
 	ctn, err := registerProviders(cmd, name, flavors, bones...)
 	if err != nil {
-		return nil, skelet, err
+		return nil, nil, err
 	}
 
 	if err := ctn.Provide(NewRunner); err != nil {
-		return nil, skelet, errors.Wrap(err, "provide runner")
+		return nil, nil, errors.Wrap(err, "provide runner")
 	}
 
-	if err := ctn.Invoke(func(x T) { skelet = x }); err != nil {
-		return nil, skelet, errors.Wrap(err, "invoke skelet")
+	var skelet *T
+	if err := ctn.Invoke(func(x *T) { skelet = x }); err != nil {
+		return nil, nil, errors.Wrap(err, "invoke skelet")
 	}
 
 	var runner *Runner
 	if err := ctn.Invoke(func(x *Runner) { runner = x }); err != nil {
-		return nil, skelet, errors.Wrap(err, "invoke runner")
+		return nil, nil, errors.Wrap(err, "invoke runner")
 	}
 
 	return runner, skelet, nil
@@ -91,7 +91,7 @@ func registerProviders(
 	}
 
 	if cmd != nil {
-		if err := viper.BindPFlags(cmd.PersistentFlags()); err != nil {
+		if err := v.BindPFlags(cmd.PersistentFlags()); err != nil {
 			return nil, errors.Wrap(err, "bind persistent flags from cobra to viper")
 		}
 	}

@@ -22,10 +22,9 @@ func TestHandler_DoArt(t *testing.T) {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	t.Cleanup(cancel)
 
-	runner, app, err := skelet.AssembleRunner(
+	runner, skelet, err := skelet.AssembleRunner[di.Di](
 		nil,
 		"test",
-		new(di.Handler),
 		di.DefaultConfig(),
 		di.Providers()...,
 	)
@@ -36,16 +35,16 @@ func TestHandler_DoArt(t *testing.T) {
 
 	t.Cleanup(runner.RunAfter)
 
-	h := app.Web.Handler()
+	h := skelet.Web.Handler()
 
-	out := RequestApi[api.DoArtIn, api.DoArtOut](t, h, http.MethodPost, "/do-art", api.DoArtIn{
+	out := RequestApi[api.DoArtOut](t, h, http.MethodPost, "/do-art", api.DoArtIn{
 		Id:   "xxx",
 		Hash: "bbb",
 	})
 	t.Log(out.OldHash)
 }
 
-func RequestApi[In, Out any](t *testing.T, h http.Handler, method, url string, in In) Out {
+func RequestApi[Out, In any](t *testing.T, h http.Handler, method, url string, in In) Out {
 	b, err := json.Marshal(in)
 	assert.Nil(t, err)
 	req := httptest.NewRequest(method, url, bytes.NewBuffer(b))
@@ -54,7 +53,7 @@ func RequestApi[In, Out any](t *testing.T, h http.Handler, method, url string, i
 	resp := w.Result()
 	defer resp.Body.Close()
 
-	assert.EqualValues(t, resp.StatusCode, 200)
+	assert.EqualValues(t, resp.StatusCode, http.StatusOK)
 	var o Out
 	err = json.NewDecoder(resp.Body).Decode(&o)
 	assert.Nil(t, err)
