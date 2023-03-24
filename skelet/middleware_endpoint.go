@@ -5,22 +5,26 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
-func RestGuest[Input any, Output any](
-	handle func(ctx context.Context, in Input) (Output, error),
+func RestGuest[I any, O any](
+	handle func(ctx context.Context, in I) (O, error),
 ) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var in Input
+		var in I
 		if err := c.ShouldBindJSON(&in); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, NewBadRequestException(err.Error()))
 			return
 		}
 
 		out, err := handle(c, in)
 		if err != nil {
-			// TODO(mpavlicek): translate web errors
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			var apiException ApiException
+			if !errors.As(err, &apiException) {
+				apiException = NewApiExceptionFromError(err)
+			}
+			c.JSON(apiException.StatusCode, apiException)
 			return
 		}
 
@@ -28,8 +32,8 @@ func RestGuest[Input any, Output any](
 	}
 }
 
-func HtmlGuestGet[Output any](
-	handle func(ctx context.Context) (Output, error),
+func HtmlGuestGet[O any](
+	handle func(ctx context.Context) (O, error),
 	tmpl string,
 ) func(c *gin.Context) {
 	return func(c *gin.Context) {

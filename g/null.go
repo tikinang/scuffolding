@@ -1,4 +1,4 @@
-package opt
+package g
 
 import (
 	"encoding/json"
@@ -23,15 +23,15 @@ func (r Null[T]) Ask() (T, bool) {
 	return r.value, r.filled
 }
 
-func New[T any](value T) Null[T] {
+func FillNull[T any](value T) Null[T] {
 	return Null[T]{
 		filled: true,
 		value:  value,
 	}
 }
 
-func Empty[T any]() Null[T] {
-	return Null[T]{}
+func EmptyNull[T any]() Null[T] {
+	return Empty[Null[T]]()
 }
 
 var _ json.Marshaler = (*Null[string])(nil)
